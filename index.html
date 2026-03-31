@@ -1,0 +1,1213 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Chen Mike Aloni - GRC, Security Architecture & DevSecOps</title>
+<meta name="description" content="DevSecOps Engineer & Cloud Security Architect. CISSP | CISM. 7+ years in networking, security governance and infrastructure.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=Work+Sans:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+/* ═══════════════════════════════════════
+   CSS VARIABLES & RESET
+   ═══════════════════════════════════════ */
+:root {
+  --bg-primary: #060b14;
+  --bg-secondary: #0c1322;
+  --bg-card: #111927;
+  --bg-card-hover: #162033;
+  --border-subtle: #1a2540;
+  --border-accent: #1e3a5f;
+  --text-primary: #e8ecf2;
+  --text-secondary: #8a96a8;
+  --text-muted: #5a6678;
+  --accent: #00c896;
+  --accent-dim: rgba(0,200,150,0.12);
+  --accent-glow: rgba(0,200,150,0.25);
+  --amber: #e0a050;
+  --amber-dim: rgba(224,160,80,0.12);
+  --red-soft: #f06060;
+  --font-display: 'Syne', sans-serif;
+  --font-body: 'Work Sans', sans-serif;
+  --font-mono: 'JetBrains Mono', monospace;
+  --max-w: 1100px;
+  --radius: 8px;
+  --transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 80px;
+}
+
+body {
+  font-family: var(--font-body);
+  background: var(--bg-primary);
+  color: var(--text-primary);
+  line-height: 1.65;
+  font-weight: 400;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+
+/* ═══════════════════════════════════════
+   BACKGROUND GRID PATTERN
+   ═══════════════════════════════════════ */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image:
+    linear-gradient(var(--border-subtle) 1px, transparent 1px),
+    linear-gradient(90deg, var(--border-subtle) 1px, transparent 1px);
+  background-size: 60px 60px;
+  opacity: 0.15;
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* ═══════════════════════════════════════
+   NAV
+   ═══════════════════════════════════════ */
+nav {
+  position: fixed;
+  top: 0;
+  width: 100%;
+  z-index: 100;
+  background: rgba(6,11,20,0.85);
+  backdrop-filter: blur(16px);
+  border-bottom: 1px solid var(--border-subtle);
+}
+
+nav .nav-inner {
+  max-width: var(--max-w);
+  margin: 0 auto;
+  padding: 0 24px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 60px;
+}
+
+nav .nav-logo {
+  font-family: var(--font-mono);
+  font-size: 14px;
+  color: var(--accent);
+  letter-spacing: 0.5px;
+  text-decoration: none;
+}
+
+nav .nav-links {
+  display: flex;
+  gap: 28px;
+  list-style: none;
+}
+
+nav .nav-links a {
+  font-family: var(--font-body);
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--text-secondary);
+  text-decoration: none;
+  letter-spacing: 0.3px;
+  transition: color var(--transition);
+}
+
+nav .nav-links a:hover { color: var(--accent); }
+
+.hamburger {
+  display: none;
+  flex-direction: column;
+  gap: 5px;
+  cursor: pointer;
+  background: none;
+  border: none;
+  padding: 4px;
+}
+
+.hamburger span {
+  display: block;
+  width: 22px;
+  height: 2px;
+  background: var(--text-secondary);
+  transition: var(--transition);
+}
+
+/* ═══════════════════════════════════════
+   LAYOUT
+   ═══════════════════════════════════════ */
+.container {
+  max-width: var(--max-w);
+  margin: 0 auto;
+  padding: 0 24px;
+  position: relative;
+  z-index: 1;
+}
+
+section {
+  padding: 100px 0;
+}
+
+.section-label {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 500;
+  color: var(--accent);
+  letter-spacing: 2.5px;
+  text-transform: uppercase;
+  margin-bottom: 12px;
+  opacity: 0.8;
+}
+
+.section-title {
+  font-family: var(--font-display);
+  font-size: clamp(28px, 4vw, 38px);
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-bottom: 20px;
+  line-height: 1.2;
+}
+
+.section-subtitle {
+  font-size: 16px;
+  color: var(--text-secondary);
+  max-width: 600px;
+  line-height: 1.7;
+}
+
+/* ═══════════════════════════════════════
+   HERO
+   ═══════════════════════════════════════ */
+#hero {
+  padding: 160px 0 100px;
+  position: relative;
+}
+
+.hero-glow {
+  position: absolute;
+  top: -100px;
+  right: -200px;
+  width: 600px;
+  height: 600px;
+  background: radial-gradient(circle, var(--accent-glow) 0%, transparent 70%);
+  opacity: 0.15;
+  pointer-events: none;
+}
+
+.hero-top-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 20px;
+  flex-wrap: wrap;
+}
+
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 5px 12px;
+  border-radius: 20px;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.5px;
+}
+
+.badge-cert {
+  background: var(--accent-dim);
+  color: var(--accent);
+  border: 1px solid rgba(0,200,150,0.2);
+}
+
+.badge-role {
+  background: var(--amber-dim);
+  color: var(--amber);
+  border: 1px solid rgba(224,160,80,0.2);
+}
+
+.hero-name {
+  font-family: var(--font-display);
+  font-size: clamp(42px, 7vw, 72px);
+  font-weight: 800;
+  line-height: 1.05;
+  margin-bottom: 20px;
+  letter-spacing: -1px;
+}
+
+.hero-name .accent { color: var(--accent); }
+
+.hero-tagline {
+  font-size: 18px;
+  color: var(--text-secondary);
+  max-width: 640px;
+  line-height: 1.7;
+  margin-bottom: 36px;
+  font-weight: 300;
+}
+
+.hero-tagline strong {
+  color: var(--text-primary);
+  font-weight: 500;
+}
+
+.hero-links {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 11px 22px;
+  border-radius: 6px;
+  font-family: var(--font-body);
+  font-size: 14px;
+  font-weight: 500;
+  text-decoration: none;
+  transition: all var(--transition);
+  cursor: pointer;
+  border: none;
+}
+
+.btn-primary {
+  background: var(--accent);
+  color: var(--bg-primary);
+}
+
+.btn-primary:hover {
+  background: #00e0a6;
+  box-shadow: 0 0 24px var(--accent-glow);
+}
+
+.btn-outline {
+  background: transparent;
+  color: var(--text-primary);
+  border: 1px solid var(--border-accent);
+}
+
+.btn-outline:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+/* ═══════════════════════════════════════
+   STATS ROW
+   ═══════════════════════════════════════ */
+.stats-row {
+  display: flex;
+  gap: 40px;
+  margin-top: 60px;
+  padding-top: 40px;
+  border-top: 1px solid var(--border-subtle);
+  flex-wrap: wrap;
+}
+
+.stat-item .stat-num {
+  font-family: var(--font-display);
+  font-size: 32px;
+  font-weight: 700;
+  color: var(--text-primary);
+  line-height: 1;
+}
+
+.stat-item .stat-label {
+  font-size: 13px;
+  color: var(--text-muted);
+  margin-top: 6px;
+}
+
+/* ═══════════════════════════════════════
+   ABOUT
+   ═══════════════════════════════════════ */
+#about { border-top: 1px solid var(--border-subtle); }
+
+.about-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 60px;
+  margin-top: 40px;
+}
+
+.about-narrative {
+  font-size: 15px;
+  color: var(--text-secondary);
+  line-height: 1.8;
+}
+
+.about-narrative p + p { margin-top: 16px; }
+.about-narrative strong { color: var(--text-primary); font-weight: 500; }
+
+.about-highlights {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.highlight-card {
+  padding: 20px;
+  background: var(--bg-card);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius);
+  transition: var(--transition);
+}
+
+.highlight-card:hover {
+  background: var(--bg-card-hover);
+  border-color: var(--border-accent);
+}
+
+.highlight-card .hl-icon {
+  font-size: 20px;
+  margin-bottom: 8px;
+}
+
+.highlight-card .hl-title {
+  font-family: var(--font-display);
+  font-size: 14px;
+  font-weight: 600;
+  margin-bottom: 4px;
+}
+
+.highlight-card .hl-desc {
+  font-size: 13px;
+  color: var(--text-muted);
+  line-height: 1.6;
+}
+
+/* ═══════════════════════════════════════
+   SOCIAL PROOF / RECOMMENDATIONS
+   ═══════════════════════════════════════ */
+.proof-bar {
+  margin-top: 50px;
+  padding: 32px;
+  background: var(--bg-card);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius);
+}
+
+.proof-bar .proof-header {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--text-muted);
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  margin-bottom: 20px;
+}
+
+.proof-quotes {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+}
+
+.proof-quote {
+  padding: 20px;
+  background: var(--bg-secondary);
+  border-left: 3px solid var(--accent);
+  border-radius: 0 var(--radius) var(--radius) 0;
+}
+
+.proof-quote .pq-text {
+  font-size: 14px;
+  color: var(--text-secondary);
+  line-height: 1.7;
+  font-style: italic;
+  margin-bottom: 12px;
+}
+
+.proof-quote .pq-attr {
+  font-size: 12px;
+  color: var(--text-muted);
+}
+
+.proof-quote .pq-attr strong {
+  color: var(--text-secondary);
+  font-weight: 500;
+}
+
+/* ═══════════════════════════════════════
+   PROJECTS
+   ═══════════════════════════════════════ */
+#projects { border-top: 1px solid var(--border-subtle); }
+
+.project-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 20px;
+  margin-top: 40px;
+}
+
+.project-card {
+  padding: 28px 24px;
+  background: var(--bg-card);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius);
+  transition: all var(--transition);
+  display: flex;
+  flex-direction: column;
+  text-decoration: none;
+  color: inherit;
+}
+
+.project-card:hover {
+  border-color: var(--accent);
+  transform: translateY(-3px);
+  box-shadow: 0 8px 32px rgba(0,200,150,0.08);
+}
+
+.project-card .pc-tag {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 14px;
+}
+
+.project-card .pc-title {
+  font-family: var(--font-display);
+  font-size: 18px;
+  font-weight: 700;
+  margin-bottom: 10px;
+  line-height: 1.3;
+}
+
+.project-card .pc-desc {
+  font-size: 13px;
+  color: var(--text-secondary);
+  line-height: 1.7;
+  flex-grow: 1;
+  margin-bottom: 16px;
+}
+
+.project-card .pc-tech {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.tech-tag {
+  padding: 3px 10px;
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-subtle);
+  border-radius: 20px;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: var(--text-muted);
+}
+
+/* ═══════════════════════════════════════
+   TALKS & TEACHING
+   ═══════════════════════════════════════ */
+#talks { border-top: 1px solid var(--border-subtle); }
+
+.talks-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  margin-top: 40px;
+}
+
+.talk-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
+  padding: 20px;
+  background: var(--bg-card);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius);
+  text-decoration: none;
+  color: inherit;
+  transition: all var(--transition);
+}
+
+.talk-item:hover {
+  border-color: var(--border-accent);
+  background: var(--bg-card-hover);
+}
+
+.talk-item .ti-icon {
+  flex-shrink: 0;
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 8px;
+  font-size: 16px;
+}
+
+.ti-icon.deep-tech { background: rgba(96,160,255,0.12); }
+.ti-icon.awareness { background: rgba(255,180,80,0.12); }
+.ti-icon.community { background: rgba(0,200,150,0.12); }
+
+.talk-item .ti-content { flex-grow: 1; }
+
+.talk-item .ti-category {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  margin-bottom: 4px;
+}
+
+.talk-item .ti-title {
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--text-primary);
+  line-height: 1.4;
+}
+
+.talk-item .ti-sub {
+  font-size: 12px;
+  color: var(--text-muted);
+  margin-top: 4px;
+}
+
+.talk-item .arrow {
+  color: var(--text-muted);
+  font-size: 14px;
+  transition: var(--transition);
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
+.talk-item:hover .arrow {
+  color: var(--accent);
+  transform: translateX(3px);
+}
+
+/* ═══════════════════════════════════════
+   WRITING / POSTS
+   ═══════════════════════════════════════ */
+#writing { border-top: 1px solid var(--border-subtle); }
+
+.writing-categories {
+  display: flex;
+  gap: 8px;
+  margin: 30px 0 24px;
+  flex-wrap: wrap;
+}
+
+.cat-btn {
+  padding: 7px 16px;
+  border-radius: 20px;
+  border: 1px solid var(--border-subtle);
+  background: transparent;
+  color: var(--text-secondary);
+  font-family: var(--font-body);
+  font-size: 13px;
+  cursor: pointer;
+  transition: var(--transition);
+}
+
+.cat-btn:hover, .cat-btn.active {
+  background: var(--accent-dim);
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+.writing-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.writing-item {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 16px 20px;
+  background: var(--bg-card);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius);
+  text-decoration: none;
+  color: inherit;
+  transition: all var(--transition);
+}
+
+.writing-item:hover {
+  border-color: var(--border-accent);
+  background: var(--bg-card-hover);
+}
+
+.writing-item .wi-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.wi-dot.cat-technical { background: #60a0ff; }
+.wi-dot.cat-mindset { background: #e0a050; }
+.wi-dot.cat-career { background: #00c896; }
+.wi-dot.cat-community { background: #c080ff; }
+
+.writing-item .wi-title {
+  font-size: 14px;
+  font-weight: 500;
+  flex-grow: 1;
+}
+
+.writing-item .wi-tag {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: var(--text-muted);
+  letter-spacing: 0.5px;
+  flex-shrink: 0;
+}
+
+.writing-item .arrow {
+  color: var(--text-muted);
+  font-size: 14px;
+  transition: var(--transition);
+  flex-shrink: 0;
+}
+
+.writing-item:hover .arrow {
+  color: var(--accent);
+  transform: translateX(3px);
+}
+
+/* ═══════════════════════════════════════
+   FOOTER
+   ═══════════════════════════════════════ */
+footer {
+  border-top: 1px solid var(--border-subtle);
+  padding: 60px 0;
+  text-align: center;
+}
+
+.footer-links {
+  display: flex;
+  justify-content: center;
+  gap: 24px;
+  margin-bottom: 20px;
+}
+
+.footer-links a {
+  font-family: var(--font-mono);
+  font-size: 13px;
+  color: var(--text-secondary);
+  text-decoration: none;
+  transition: var(--transition);
+}
+
+.footer-links a:hover { color: var(--accent); }
+
+.footer-copy {
+  font-size: 12px;
+  color: var(--text-muted);
+}
+
+/* ═══════════════════════════════════════
+   SCROLL ANIMATIONS
+   ═══════════════════════════════════════ */
+.fade-in {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.6s ease, transform 0.6s ease;
+}
+
+.fade-in.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ═══════════════════════════════════════
+   RESPONSIVE
+   ═══════════════════════════════════════ */
+@media (max-width: 900px) {
+  .about-grid { grid-template-columns: 1fr; gap: 40px; }
+  .project-grid { grid-template-columns: 1fr; }
+  .talks-grid { grid-template-columns: 1fr; }
+  .proof-quotes { grid-template-columns: 1fr; }
+  .stats-row { gap: 24px; }
+}
+
+@media (max-width: 640px) {
+  section { padding: 70px 0; }
+  #hero { padding: 120px 0 70px; }
+
+  nav .nav-links { display: none; }
+  nav .nav-links.open {
+    display: flex;
+    flex-direction: column;
+    position: absolute;
+    top: 60px;
+    left: 0;
+    right: 0;
+    background: rgba(6,11,20,0.97);
+    border-bottom: 1px solid var(--border-subtle);
+    padding: 20px 24px;
+    gap: 16px;
+  }
+  .hamburger { display: flex; }
+
+  .writing-item { flex-wrap: wrap; }
+  .writing-item .wi-tag { display: none; }
+}
+</style>
+</head>
+<body>
+
+<!-- ════════════════════════ NAV ════════════════════════ -->
+<nav>
+  <div class="nav-inner">
+    <a href="#hero" class="nav-logo">chen@security:~$</a>
+    <ul class="nav-links" id="navLinks">
+      <li><a href="#about">About</a></li>
+      <li><a href="#projects">Projects</a></li>
+      <li><a href="#talks">Talks</a></li>
+      <li><a href="#writing">Writing</a></li>
+      <li><a href="https://www.linkedin.com/in/chen-aloni/" target="_blank">LinkedIn</a></li>
+    </ul>
+    <button class="hamburger" onclick="document.getElementById('navLinks').classList.toggle('open')" aria-label="Toggle menu">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</nav>
+
+<!-- ════════════════════════ HERO ════════════════════════ -->
+<section id="hero">
+  <div class="container">
+    <div class="hero-glow"></div>
+
+    <div class="hero-top-row">
+      <span class="badge badge-cert">&#9670; CISSP</span>
+      <span class="badge badge-cert">&#9670; CISM</span>
+      <span class="badge badge-role">NetSec Engineer</span>
+      <span class="badge badge-role">Cloud Architect</span>
+    </div>
+
+    <h1 class="hero-name">Chen Mike<br>Aloni<span class="accent">.</span></h1>
+
+    <p class="hero-tagline">
+      <strong>DevSecOps & Security Architect</strong> with 7+ years building, securing, and automating infrastructure.
+      I bridge the gap between <strong>security governance</strong> and <strong>hands-on engineering</strong> &mdash;
+      designing systems that are secure by default, not by afterthought.
+    </p>
+
+    <div class="hero-links">
+      <a href="https://www.linkedin.com/in/chen-aloni/" target="_blank" class="btn btn-primary">
+        &#8599; LinkedIn
+      </a>
+      <a href="https://github.com/443chena/" target="_blank" class="btn btn-outline">
+        GitHub
+      </a>
+      <a href="https://www.credly.com/users/chen-mike-aloni/badges" target="_blank" class="btn btn-outline">
+        Certifications
+      </a>
+    </div>
+
+    <div class="stats-row">
+      <div class="stat-item">
+        <div class="stat-num">20+</div>
+        <div class="stat-label">Years in Security & Networking</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-num">2</div>
+        <div class="stat-label">Elite Certifications (CISSP, CISM)</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-num">30+</div>
+        <div class="stat-label">AWS Accounts Secured</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-num">3</div>
+        <div class="stat-label">Open-Source Projects</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════ ABOUT ════════════════════════ -->
+<section id="about">
+  <div class="container">
+    <div class="fade-in">
+      <span class="section-label">// About</span>
+      <h2 class="section-title">Security is a system,<br>not a checklist.</h2>
+    </div>
+
+    <div class="about-grid">
+      <div class="about-narrative fade-in">
+        <p>
+          I've spent most of this decade in the intersection of networking, security governance, and infrastructure engineering.
+          I <strong>declined a CISO offer</strong> to stay hands-on &mdash; because I believe the best security leaders
+          understand the systems they're protecting at the deepest level.
+        </p>
+        <p>
+          Currently operating as a <strong>NetSec Engineer</strong> (tactical) and <strong>Cloud Security Architect</strong> (strategic)
+          across multi-account AWS environments with hub-and-spoke topology, Transit Gateway, Check Point CloudGuard,
+          and full Terraform IaC.
+        </p>
+        <p>
+          My approach: <strong>build security into the pipeline</strong>, not bolt it on after. From shift-left DevSecOps tooling
+          to org-wide SCP enforcement, I design systems where doing the secure thing is the easy thing.
+        </p>
+      </div>
+
+      <div class="about-highlights fade-in">
+        <div class="highlight-card">
+          <div class="hl-icon">&#9881;</div>
+          <div class="hl-title">DevSecOps Engineering</div>
+          <div class="hl-desc">Shift-left security automation, CI/CD hardening, git hooks with gitleaks/trufflehog/bandit, reproducible build environments.</div>
+        </div>
+        <div class="highlight-card">
+          <div class="hl-icon">&#9729;</div>
+          <div class="hl-title">Cloud Security Architecture</div>
+          <div class="hl-desc">AWS multi-account governance, Terraform IaC, SCPs, SSM automation, CloudGuard policy at scale.</div>
+        </div>
+        <div class="highlight-card">
+          <div class="hl-icon">&#9878;</div>
+          <div class="hl-title">Security Governance</div>
+          <div class="hl-desc">Risk frameworks, compliance alignment, security awareness programs. Built internal frameworks that became commercialized IP.</div>
+        </div>
+        <div class="highlight-card">
+          <div class="hl-icon">&#128218;</div>
+          <div class="hl-title">Teaching & Mentorship</div>
+          <div class="hl-desc">Deep-dive technical lectures, exam prep material shared with ISC2 Israel, open-source community contributions.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Recommendations -->
+    <div class="proof-bar fade-in">
+      <div class="proof-header">What colleagues say</div>
+      <div class="proof-quotes">
+        <div class="proof-quote">
+          <div class="pq-text">"An exceptional professional with extensive knowledge in Security and system operations. Committed to high availability and promoting professionalism. Always willing to go the extra mile."</div>
+          <div class="pq-attr"><strong>Sun Levi</strong> &mdash; Security Operations Specialist, TrustNet</div>
+        </div>
+        <div class="proof-quote">
+          <div class="pq-text">"The brightest mind I haven't seen in a long time. Not just did his job well, but helped us fix issues we've had in the office for a long time. Chen taken itself on him to help us."</div>
+          <div class="pq-attr"><strong>Evyatar Wiser</strong> &mdash; VP, Israeli Model UN Association (IMUNA)</div>
+        </div>
+        <div class="proof-quote">
+          <div class="pq-text">"Calm under pressure, has excellent technical instincts and professional attitude. Impressed by his ability to adapt to new technologies and deliver great results in a short time."</div>
+          <div class="pq-attr"><strong>Eugene Roif</strong> &mdash; Senior Product Security Engineer</div>
+        </div>
+        <div class="proof-quote">
+          <div class="pq-text">"Demonstrated high professionalism, uncompromising dedication, and an exceptionally service-oriented approach. His contribution was evident at every level of the organization."</div>
+          <div class="pq-attr"><strong>Natan Barak</strong> &mdash; CEO, mPrest Systems</div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ════════════════════════ PROJECTS ════════════════════════ -->
+<section id="projects">
+  <div class="container">
+    <div class="fade-in">
+      <span class="section-label">// Projects & Labs</span>
+      <h2 class="section-title">I build what I preach.</h2>
+      <p class="section-subtitle">Open-source tools and frameworks that demonstrate how I think about security, automation, and infrastructure.</p>
+    </div>
+
+    <div class="project-grid">
+      <a href="https://github.com/443chena/dot-ops-wf" target="_blank" class="project-card fade-in">
+        <div class="pc-tag">DevSecOps Tooling</div>
+        <div class="pc-title">dot-ops-wf</div>
+        <div class="pc-desc">
+          Production-grade DevSecOps workstation bootstrap for Ubuntu. Integrates gitleaks, trufflehog, ruff, bandit, checkov with git hooks. GPG-verified downloads, Makefile-driven lifecycle.
+        </div>
+        <div class="pc-tech">
+          <span class="tech-tag">Bash</span>
+          <span class="tech-tag">Makefile</span>
+          <span class="tech-tag">Git Hooks</span>
+          <span class="tech-tag">GPG</span>
+        </div>
+      </a>
+
+      <a href="https://github.com/443chena/oss-ci-on-prem" target="_blank" class="project-card fade-in">
+        <div class="pc-tag">Infrastructure</div>
+        <div class="pc-title">oss-ci-on-prem</div>
+        <div class="pc-desc">
+          Reproducible on-premise CI/CD lab from open-source components. Jenkins, Nexus, Vault, OpenResty, Prometheus/Grafana/Loki. Designed for shift-left security and audit precision.
+        </div>
+        <div class="pc-tech">
+          <span class="tech-tag">Docker</span>
+          <span class="tech-tag">Jenkins</span>
+          <span class="tech-tag">Vault</span>
+          <span class="tech-tag">Terraform</span>
+        </div>
+      </a>
+
+      <div class="project-card fade-in">
+        <div class="pc-tag">Civic Impact</div>
+        <div class="pc-title">ZeroPanic-IL</div>
+        <div class="pc-desc">
+          Civilian emergency procedures booklet for Israeli families. Based on Home Front Command and MOH guidelines. Available in Hebrew and English. Submitted for Bright Data social impact grant.
+        </div>
+        <div class="pc-tech">
+          <span class="tech-tag">Emergency Ops</span>
+          <span class="tech-tag">HE / EN</span>
+          <span class="tech-tag">Public Safety</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════ TALKS & TEACHING ════════════════════════ -->
+<section id="talks">
+  <div class="container">
+    <div class="fade-in">
+      <span class="section-label">// Talks & Teaching</span>
+      <h2 class="section-title">I don't just know it &mdash;<br>I teach it.</h2>
+      <p class="section-subtitle">Deep technical lectures, security awareness training, and community-shared exam prep material.</p>
+    </div>
+
+    <div class="talks-grid">
+      <a href="https://docs.google.com/presentation/d/1yy5OfGwmMpvsQHt2RGL0CW6QntjGlShX" target="_blank" class="talk-item fade-in">
+        <div class="ti-icon deep-tech">&#128300;</div>
+        <div class="ti-content">
+          <div class="ti-category">Deep Tech</div>
+          <div class="ti-title">NotPetya &mdash; Holistic Malware Analysis</div>
+          <div class="ti-sub">Full-spectrum technical lecture on one of history's most destructive cyberattacks</div>
+        </div>
+        <span class="arrow">&#8594;</span>
+      </a>
+
+      <a href="https://drive.google.com/file/d/1m4Ri9LrCKtWnXvSKgxRME0691L_hyDzj" target="_blank" class="talk-item fade-in">
+        <div class="ti-icon deep-tech">&#128300;</div>
+        <div class="ti-content">
+          <div class="ti-category">Deep Tech</div>
+          <div class="ti-title">HTTP Evolution &mdash; HTTP/1.1 to HTTP/3 & QUIC</div>
+          <div class="ti-sub">Protocol-level walkthrough of modern web transport</div>
+        </div>
+        <span class="arrow">&#8594;</span>
+      </a>
+
+      <a href="https://drive.google.com/file/d/1hvHdE6SDoKrugVdXIQcA9hvIJJb1Lh7g" target="_blank" class="talk-item fade-in">
+        <div class="ti-icon awareness">&#9888;</div>
+        <div class="ti-content">
+          <div class="ti-category">Security Awareness</div>
+          <div class="ti-title">Employee Awareness &mdash; BiBi Wiper Edition</div>
+          <div class="ti-sub">Updated security awareness lecture featuring real-world Israeli threat context</div>
+        </div>
+        <span class="arrow">&#8594;</span>
+      </a>
+
+      <a href="https://docs.google.com/presentation/d/1Cy-mrd04mEZY7XyP7-gcT3WY3FjhJagv" target="_blank" class="talk-item fade-in">
+        <div class="ti-icon awareness">&#9888;</div>
+        <div class="ti-content">
+          <div class="ti-category">Security Awareness</div>
+          <div class="ti-title">Employee Security Awareness Training</div>
+          <div class="ti-sub">Original security awareness program developed for enterprise environments</div>
+        </div>
+        <span class="arrow">&#8594;</span>
+      </a>
+
+      <a href="https://docs.google.com/spreadsheets/d/1U5WWnAM2Nsn-IQdLQdBMw-DWwndlQETNWvsqQ83dhac" target="_blank" class="talk-item fade-in">
+        <div class="ti-icon community">&#127891;</div>
+        <div class="ti-content">
+          <div class="ti-category">Community Resource</div>
+          <div class="ti-title">CISSP Exam Cram & Cheatsheets</div>
+          <div class="ti-sub">Comprehensive study material reshared by ISC2 Israel Chapter</div>
+        </div>
+        <span class="arrow">&#8594;</span>
+      </a>
+
+      <a href="https://www.figma.com/design/yUh0NEpQPt0z427jZjph1b/CISSP-MEM_Palace" target="_blank" class="talk-item fade-in">
+        <div class="ti-icon community">&#127891;</div>
+        <div class="ti-content">
+          <div class="ti-category">Community Resource</div>
+          <div class="ti-title">CISSP Visual Mind Palace</div>
+          <div class="ti-sub">Figma-based memory palace for security certification prep</div>
+        </div>
+        <span class="arrow">&#8594;</span>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════ WRITING ════════════════════════ -->
+<section id="writing">
+  <div class="container">
+    <div class="fade-in">
+      <span class="section-label">// Selected Writing</span>
+      <h2 class="section-title">How I think, publicly.</h2>
+      <p class="section-subtitle">Curated posts on security philosophy, career lessons, and technical observations.</p>
+    </div>
+
+    <div class="writing-categories fade-in">
+      <button class="cat-btn active" onclick="filterPosts('all')">All</button>
+      <button class="cat-btn" onclick="filterPosts('technical')">Technical</button>
+      <button class="cat-btn" onclick="filterPosts('mindset')">Mindset</button>
+      <button class="cat-btn" onclick="filterPosts('career')">Career</button>
+      <button class="cat-btn" onclick="filterPosts('community')">Community</button>
+    </div>
+
+    <div class="writing-list" id="writingList">
+
+      <!-- TECHNICAL -->
+      <a href="https://www.linkedin.com/posts/chen-aloni_he-died-on-my-shift-an-old-physical-server-activity-7374423200471891969-vwWp" target="_blank" class="writing-item" data-cat="technical">
+        <span class="wi-dot cat-technical"></span>
+        <span class="wi-title">Saving a Critical Legacy Server &mdash; DDR1 + Serial License</span>
+        <span class="wi-tag">TECHNICAL</span>
+        <span class="arrow">&#8594;</span>
+      </a>
+
+      <a href="https://www.linkedin.com/posts/chen-aloni_%D7%91%D7%98%D7%99%D7%97%D7%95%D7%AA-%D7%95%D7%97%D7%A9%D7%99%D7%91%D7%94-%D7%9E%D7%A2%D7%A8%D7%9B%D7%AA%D7%99%D7%AA-%D7%9B%D7%9B%D7%9C%D7%99-%D7%A2%D7%91%D7%95%D7%93%D7%94-%D7%9C%D7%90-%D7%9B%D7%A1%D7%99%D7%A1%D7%9E%D7%94-activity-7360601377787510784-x9am" target="_blank" class="writing-item" data-cat="technical">
+        <span class="wi-dot cat-technical"></span>
+        <span class="wi-title">Security Mindset &mdash; Hospital Automatic Door Observation</span>
+        <span class="wi-tag">TECHNICAL</span>
+        <span class="arrow">&#8594;</span>
+      </a>
+
+      <a href="https://www.linkedin.com/posts/chen-aloni_isc2-cissp-accesscontrol-activity-7365627745059373056-iP2t" target="_blank" class="writing-item" data-cat="technical">
+        <span class="wi-dot cat-technical"></span>
+        <span class="wi-title">CISSP Breakdown &mdash; Access Control Models Visualized</span>
+        <span class="wi-tag">TECHNICAL</span>
+        <span class="arrow">&#8594;</span>
+      </a>
+
+      <a href="https://www.linkedin.com/posts/chen-aloni_cisspjourney-isc2-cybersecurity-activity-7236629039153594371-SvFS" target="_blank" class="writing-item" data-cat="technical">
+        <span class="wi-dot cat-technical"></span>
+        <span class="wi-title">Biometric FAR/FRR Error Rates Explained</span>
+        <span class="wi-tag">TECHNICAL</span>
+        <span class="arrow">&#8594;</span>
+      </a>
+
+      <!-- MINDSET -->
+      <a href="https://www.linkedin.com/posts/chen-aloni_%F0%9D%97%AA%F0%9D%97%B5%F0%9D%97%B2%F0%9D%97%BB-%F0%9D%97%B9%F0%9D%97%B6%F0%9D%97%B3%F0%9D%97%B2-%F0%9D%97%B5%F0%9D%97%AE%F0%9D%97%BB%F0%9D%97%B1%F0%9D%98%80-%F0%9D%98%86%F0%9D%97%BC%F0%9D%98%82-%F0%9D%97%AE-%F0%9D%98%80-activity-7291498176514084864-zavQ" target="_blank" class="writing-item" data-cat="mindset">
+        <span class="wi-dot cat-mindset"></span>
+        <span class="wi-title">When Life Hands You a Scalpel, Carve Your Path Forward</span>
+        <span class="wi-tag">MINDSET</span>
+        <span class="arrow">&#8594;</span>
+      </a>
+
+      <a href="https://www.linkedin.com/posts/chen-aloni_most-of-what-i-share-is-technical-either-activity-7371799765111607296-Y-IL/" target="_blank" class="writing-item" data-cat="mindset">
+        <span class="wi-dot cat-mindset"></span>
+        <span class="wi-title">Sympathy &mdash; From "The Name of the Wind" to Content Systems</span>
+        <span class="wi-tag">MINDSET</span>
+        <span class="arrow">&#8594;</span>
+      </a>
+
+      <a href="https://www.linkedin.com/posts/chen-aloni_%F0%9D%97%9F%F0%9D%97%B2%F0%9D%97%AE%F0%9D%97%B1-%F0%9D%98%84%F0%9D%97%B6%F0%9D%98%81%F0%9D%97%B5-%F0%9D%97%B0%F0%9D%97%B2%F0%9D%97%BF%F0%9D%98%81%F0%9D%97%AE%F0%9D%97%B6%F0%9D%97%BB%F0%9D%98%81%F0%9D%98%86-%F0%9D%97%AE%F0%9D%98%82%F0%9D%97%B1%F0%9D%97%B6%F0%9D%98%81-activity-7368904358844989440-MNN0" target="_blank" class="writing-item" data-cat="mindset">
+        <span class="wi-dot cat-mindset"></span>
+        <span class="wi-title">Lead with Certainty, Audit with Doubt</span>
+        <span class="wi-tag">MINDSET</span>
+        <span class="arrow">&#8594;</span>
+      </a>
+
+      <!-- CAREER -->
+      <a href="https://www.linkedin.com/posts/chen-aloni_cybersecurity-educationvsexperience-cissp-activity-7254019827483234304-TGaG" target="_blank" class="writing-item" data-cat="career">
+        <span class="wi-dot cat-career"></span>
+        <span class="wi-title">How to Turn Your Career to Tech from Day 1</span>
+        <span class="wi-tag">CAREER</span>
+        <span class="arrow">&#8594;</span>
+      </a>
+
+      <a href="https://www.linkedin.com/posts/chen-aloni_part-cybersecurity-careerchange-activity-7190968204683341824-NLtX" target="_blank" class="writing-item" data-cat="career">
+        <span class="wi-dot cat-career"></span>
+        <span class="wi-title">CISSP in 74 Days &mdash; Self-Study Methods & Material</span>
+        <span class="wi-tag">CAREER</span>
+        <span class="arrow">&#8594;</span>
+      </a>
+
+      <a href="https://www.linkedin.com/posts/chen-aloni_chen-ppt-activity-7198215966047010816-cWEd" target="_blank" class="writing-item" data-cat="career">
+        <span class="wi-dot cat-career"></span>
+        <span class="wi-title">Failed the 7th Interview &mdash; Still Happy, Still Learning</span>
+        <span class="wi-tag">CAREER</span>
+        <span class="arrow">&#8594;</span>
+      </a>
+
+      <a href="https://www.linkedin.com/posts/chen-aloni_cybersecurity-studytips-activity-7238803323464650752-dbQk" target="_blank" class="writing-item" data-cat="career">
+        <span class="wi-dot cat-career"></span>
+        <span class="wi-title">CISM in 3 Weeks &mdash; After Hours Study Journey</span>
+        <span class="wi-tag">CAREER</span>
+        <span class="arrow">&#8594;</span>
+      </a>
+
+      <!-- COMMUNITY -->
+      <a href="https://www.linkedin.com/posts/chen-aloni_%D7%A0%D7%95%D7%94%D7%9C-%D7%97%D7%99%D7%A8%D7%95%D7%9D-%D7%90%D7%99%D7%A9%D7%99-%D7%91%D7%9E%D7%A7%D7%A8%D7%94-%D7%A9%D7%9C-%D7%90%D7%99%D7%95%D7%9D-%D7%9E%D7%99%D7%99%D7%93%D7%99-%D7%97%D7%9F-ugcPost-7433489537194090496-kBOu/" target="_blank" class="writing-item" data-cat="community">
+        <span class="wi-dot cat-community"></span>
+        <span class="wi-title">ZeroPanic &mdash; Emergency Handbook for Israeli Families</span>
+        <span class="wi-tag">COMMUNITY</span>
+        <span class="arrow">&#8594;</span>
+      </a>
+
+      <a href="https://www.linkedin.com/posts/chen-aloni_github-443chenadot-ops-wf-this-project-activity-7432333619047743488-z3Aw" target="_blank" class="writing-item" data-cat="community">
+        <span class="wi-dot cat-community"></span>
+        <span class="wi-title">dot-ops-wf &mdash; Open-Source DevSecOps Bootstrap</span>
+        <span class="wi-tag">COMMUNITY</span>
+        <span class="arrow">&#8594;</span>
+      </a>
+
+      <a href="https://www.linkedin.com/posts/chen-aloni_employeeengagement-workplaceefficiency-itmanagement-activity-7200752586184896513-dQWL" target="_blank" class="writing-item" data-cat="community">
+        <span class="wi-dot cat-community"></span>
+        <span class="wi-title">Boosting Team Morale &mdash; Stop Wasting Time on Equipment Packaging</span>
+        <span class="wi-tag">COMMUNITY</span>
+        <span class="arrow">&#8594;</span>
+      </a>
+
+      <a href="https://www.linkedin.com/posts/yehonatan-alfasi_inteviews-technology-adeacgacpaclacwacladg-activity-7244026769710739458-G6OS/" target="_blank" class="writing-item" data-cat="community">
+        <span class="wi-dot cat-community"></span>
+        <span class="wi-title">CEO/Founder Posted About My Recruitment Methods</span>
+        <span class="wi-tag">FEATURED BY OTHERS</span>
+        <span class="arrow">&#8594;</span>
+      </a>
+
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════ FOOTER ════════════════════════ -->
+<footer>
+  <div class="container">
+    <div class="footer-links">
+      <a href="https://www.linkedin.com/in/chen-aloni/" target="_blank">LinkedIn</a>
+      <a href="https://github.com/443chena/" target="_blank">GitHub</a>
+      <a href="https://www.credly.com/users/chen-mike-aloni/badges" target="_blank">Credly</a>
+    </div>
+    <p class="footer-copy">&copy; 2026 Chen Mike Aloni. Built with purpose.</p>
+  </div>
+</footer>
+
+<!-- ════════════════════════ JS ════════════════════════ -->
+<script>
+// Scroll fade-in
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.classList.add('visible');
+    }
+  });
+}, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+
+document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+
+// Writing filter
+function filterPosts(cat) {
+  document.querySelectorAll('.cat-btn').forEach(btn => btn.classList.remove('active'));
+  event.target.classList.add('active');
+
+  document.querySelectorAll('.writing-item').forEach(item => {
+    if (cat === 'all' || item.dataset.cat === cat) {
+      item.style.display = 'flex';
+    } else {
+      item.style.display = 'none';
+    }
+  });
+}
+
+// Close mobile nav on link click
+document.querySelectorAll('.nav-links a').forEach(link => {
+  link.addEventListener('click', () => {
+    document.getElementById('navLinks').classList.remove('open');
+  });
+});
+</script>
+
+</body>
+</html>
